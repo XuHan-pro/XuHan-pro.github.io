@@ -182,10 +182,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-12-05 18:43:00 / 修改时间：19:37:11" itemprop="dateCreated datePublished" datetime="2022-12-05T18:43:00+08:00">2022-12-05</time>
+              <time title="创建时间：2022-12-05 18:43:00" itemprop="dateCreated datePublished" datetime="2022-12-05T18:43:00+08:00">2022-12-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-12 19:20:29" itemprop="dateModified" datetime="2022-12-12T19:20:29+08:00">2022-12-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -202,7 +208,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>354</span>
+              <span>908</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -227,8 +233,29 @@
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014587147/article/details/77985508">https://blog.csdn.net/u014587147/article/details/77985508</a></li>
 </ul>
 <p><strong>存在的问题</strong><br>设置固定高度虽然能够扫描到一定高度的障碍物，但是只能在一定距离才能实现，没有达到特定距离障碍物则会消失  </p>
-<h1 id="深度相机-激光雷达实现vSLAM建图与导航"><a href="#深度相机-激光雷达实现vSLAM建图与导航" class="headerlink" title="深度相机+激光雷达实现vSLAM建图与导航"></a><a target="_blank" rel="noopener" href="https://blog.yanjingang.com/?p=5756">深度相机+激光雷达实现vSLAM建图与导航</a></h1><h2 id="rtabmap"><a href="#rtabmap" class="headerlink" title="rtabmap"></a><a target="_blank" rel="noopener" href="https://github.com/introlab/rtabmap/wiki">rtabmap</a></h2><ol>
-<li><a target="_blank" rel="noopener" href="https://answers.ros.org/question/274729/rtab-map-not-using-correct-parameters/">通过launch文件更改参数失效（启动时仍然是默认参数）</a></li>
+<h1 id="深度相机-激光雷达实现vSLAM建图与导航"><a href="#深度相机-激光雷达实现vSLAM建图与导航" class="headerlink" title="深度相机+激光雷达实现vSLAM建图与导航"></a><a target="_blank" rel="noopener" href="https://blog.yanjingang.com/?p=5756">深度相机+激光雷达实现vSLAM建图与导航</a></h1><h2 id="rtabmap使用"><a href="#rtabmap使用" class="headerlink" title="rtabmap使用"></a><a target="_blank" rel="noopener" href="https://github.com/introlab/rtabmap/wiki">rtabmap使用</a></h2><ul>
+<li>问题:<a target="_blank" rel="noopener" href="https://answers.ros.org/question/274729/rtab-map-not-using-correct-parameters/">通过launch文件更改参数失效（启动时仍然是默认参数）</a>  </li>
+<li>使用方法：</li>
+</ul>
+<ol>
+<li><p>作为vo：rtab_odometry位置更新频率低、无法通过ekf与odom和imu融合<br>解决方法：<br>优化参数:  </p>
+<p>结果：位置更新频率由6hz提高到16hz和里程计与imu仍然相差太大无法融合</p>
+</li>
+<li><p>作为laser：通过rtab获取障碍物点云，将其向二维地图投影，作为laser数据.<br>通过法线法过滤地面和天花板，留下障碍物点云，通过pointcloud_to_laserscan转换为激光雷达数据进行避障。 </p>
+<p>结果：相比于直接使用depthimage_to_laserscan避障效果更好，对于建图效果，由于深度点云稳定性较差，导致最后激光数据不稳定从而使建图效果变差并且由于下面的问题，也无法将桌面信息更新到地图中。因此只能用于导航。</p>
+</li>
+</ol>
+<ul>
+<li><p>问题：由于相机视野原因，仍然存在一定距离范围内无法检测到桌面的情况。有一定概率从桌子底部穿过。</p>
+</li>
+<li><p>解决方法：适当向上调整相机角度可以改善此问题、由于底盘高度较低，水平放置相机下半部分视野范围存在大量无效信息（主要是地面信息、虽然能够通过法线法过滤但是仍然没有充分利用所有信息）。此方法需要<a href="">联合标定</a>确定相机tf坐标变换，后续可通过三维模型确认。</p>
+</li>
+<li><p>障碍物类型：</p>
+</li>
+</ul>
+<ol>
+<li>实际过不去，但是通过二维激光获得的数据认为过的去：桌子</li>
+<li>实际能过去，但是通过二维激光获得的数据认为过不去：斜坡（无障碍通道）</li>
 </ol>
 
       
@@ -435,7 +462,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-05 19:42:36" itemprop="dateModified" datetime="2022-12-05T19:42:36+08:00">2022-12-05</time>
+                <time title="修改时间：2022-12-08 09:44:54" itemprop="dateModified" datetime="2022-12-08T09:44:54+08:00">2022-12-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -453,7 +480,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>214</span>
+              <span>216</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -474,7 +501,7 @@
       
           <h1 id="1、安装驱动问题"><a href="#1、安装驱动问题" class="headerlink" title="1、安装驱动问题"></a>1、安装驱动问题</h1><h2 id="1-1-USB串口问题"><a href="#1-1-USB串口问题" class="headerlink" title="1.1 USB串口问题"></a>1.1 USB串口问题</h2><p>Kinect v1 USB2.0串口 独占，不支持分线器<br>Kinect v2 USB3.0串口</p>
 <h2 id="1-2-驱动安装问题"><a href="#1-2-驱动安装问题" class="headerlink" title="1.2 驱动安装问题"></a>1.2 驱动安装问题</h2><p>Kinect v1存在不同版本驱动注意与系统版本区别<br>主要安装freenect和libfreenect</p>
-<h1 id="2、标定问题"><a href="#2、标定问题" class="headerlink" title="2、标定问题"></a>2、标定问题</h1><p>Kinetic v2 标定<br>kinect本身存在范围限制无法通过标定解决，最佳范围为0.5m到4.5m，距离太近深度图和RGB图无法配准（出现残影、重叠）属于正常现象。<br><a target="_blank" rel="noopener" href="https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration">github</a><br><a target="_blank" rel="noopener" href="https://github.com/code-iai/iai_kinect2/issues/311">注意事项</a></p>
+<h1 id="2、标定问题"><a href="#2、标定问题" class="headerlink" title="2、标定问题"></a>2、标定问题</h1><p><a target="_blank" rel="noopener" href="http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration">v1</a><br>Kinetic v2 标定<br>kinect本身存在范围限制无法通过标定解决，最佳范围为0.5m到4.5m，距离太近深度图和RGB图无法配准（出现残影、重叠）属于正常现象。<br><a target="_blank" rel="noopener" href="https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration">github</a><br><a target="_blank" rel="noopener" href="https://github.com/code-iai/iai_kinect2/issues/311">注意事项</a></p>
 
       
     </div>

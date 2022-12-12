@@ -30,7 +30,7 @@
 <meta property="og:description" content="depthimage_to_laserscan问题关于参数scan_height (int, default: 1 pixel)理解及设置取高度从offset-scan_hight&#x2F;2到 offset+scan_hight&#x2F;2的点云，对于每一列，扫描将返回在图像中垂直居中的那些像素的最小值。参考：     https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;43 http">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-05T10:43:00.000Z">
-<meta property="article:modified_time" content="2022-12-05T11:37:11.110Z">
+<meta property="article:modified_time" content="2022-12-12T11:20:29.866Z">
 <meta property="article:author" content="XuHan">
 <meta property="article:tag" content="ROS1">
 <meta name="twitter:card" content="summary">
@@ -185,10 +185,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-12-05 18:43:00 / 修改时间：19:37:11" itemprop="dateCreated datePublished" datetime="2022-12-05T18:43:00+08:00">2022-12-05</time>
+              <time title="创建时间：2022-12-05 18:43:00" itemprop="dateCreated datePublished" datetime="2022-12-05T18:43:00+08:00">2022-12-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-12 19:20:29" itemprop="dateModified" datetime="2022-12-12T19:20:29+08:00">2022-12-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -212,7 +218,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>354</span>
+              <span>908</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -237,8 +243,29 @@
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014587147/article/details/77985508">https://blog.csdn.net/u014587147/article/details/77985508</a></li>
 </ul>
 <p><strong>存在的问题</strong><br>设置固定高度虽然能够扫描到一定高度的障碍物，但是只能在一定距离才能实现，没有达到特定距离障碍物则会消失  </p>
-<h1 id="深度相机-激光雷达实现vSLAM建图与导航"><a href="#深度相机-激光雷达实现vSLAM建图与导航" class="headerlink" title="深度相机+激光雷达实现vSLAM建图与导航"></a><a target="_blank" rel="noopener" href="https://blog.yanjingang.com/?p=5756">深度相机+激光雷达实现vSLAM建图与导航</a></h1><h2 id="rtabmap"><a href="#rtabmap" class="headerlink" title="rtabmap"></a><a target="_blank" rel="noopener" href="https://github.com/introlab/rtabmap/wiki">rtabmap</a></h2><ol>
-<li><a target="_blank" rel="noopener" href="https://answers.ros.org/question/274729/rtab-map-not-using-correct-parameters/">通过launch文件更改参数失效（启动时仍然是默认参数）</a></li>
+<h1 id="深度相机-激光雷达实现vSLAM建图与导航"><a href="#深度相机-激光雷达实现vSLAM建图与导航" class="headerlink" title="深度相机+激光雷达实现vSLAM建图与导航"></a><a target="_blank" rel="noopener" href="https://blog.yanjingang.com/?p=5756">深度相机+激光雷达实现vSLAM建图与导航</a></h1><h2 id="rtabmap使用"><a href="#rtabmap使用" class="headerlink" title="rtabmap使用"></a><a target="_blank" rel="noopener" href="https://github.com/introlab/rtabmap/wiki">rtabmap使用</a></h2><ul>
+<li>问题:<a target="_blank" rel="noopener" href="https://answers.ros.org/question/274729/rtab-map-not-using-correct-parameters/">通过launch文件更改参数失效（启动时仍然是默认参数）</a>  </li>
+<li>使用方法：</li>
+</ul>
+<ol>
+<li><p>作为vo：rtab_odometry位置更新频率低、无法通过ekf与odom和imu融合<br>解决方法：<br>优化参数:  </p>
+<p>结果：位置更新频率由6hz提高到16hz和里程计与imu仍然相差太大无法融合</p>
+</li>
+<li><p>作为laser：通过rtab获取障碍物点云，将其向二维地图投影，作为laser数据.<br>通过法线法过滤地面和天花板，留下障碍物点云，通过pointcloud_to_laserscan转换为激光雷达数据进行避障。 </p>
+<p>结果：相比于直接使用depthimage_to_laserscan避障效果更好，对于建图效果，由于深度点云稳定性较差，导致最后激光数据不稳定从而使建图效果变差并且由于下面的问题，也无法将桌面信息更新到地图中。因此只能用于导航。</p>
+</li>
+</ol>
+<ul>
+<li><p>问题：由于相机视野原因，仍然存在一定距离范围内无法检测到桌面的情况。有一定概率从桌子底部穿过。</p>
+</li>
+<li><p>解决方法：适当向上调整相机角度可以改善此问题、由于底盘高度较低，水平放置相机下半部分视野范围存在大量无效信息（主要是地面信息、虽然能够通过法线法过滤但是仍然没有充分利用所有信息）。此方法需要<a href="">联合标定</a>确定相机tf坐标变换，后续可通过三维模型确认。</p>
+</li>
+<li><p>障碍物类型：</p>
+</li>
+</ul>
+<ol>
+<li>实际过不去，但是通过二维激光获得的数据认为过的去：桌子</li>
+<li>实际能过去，但是通过二维激光获得的数据认为过不去：斜坡（无障碍通道）</li>
 </ol>
 
     </div>
@@ -337,7 +364,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#depthimage-to-laserscan%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">depthimage_to_laserscan问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%82%E6%95%B0scan-height-int-default-1-pixel-%E7%90%86%E8%A7%A3%E5%8F%8A%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">关于参数scan_height (int, default: 1 pixel)理解及设置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA-%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE%E5%AE%9E%E7%8E%B0vSLAM%E5%BB%BA%E5%9B%BE%E4%B8%8E%E5%AF%BC%E8%88%AA"><span class="nav-number">2.</span> <span class="nav-text">深度相机+激光雷达实现vSLAM建图与导航</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rtabmap"><span class="nav-number">2.1.</span> <span class="nav-text">rtabmap</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#depthimage-to-laserscan%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">depthimage_to_laserscan问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%82%E6%95%B0scan-height-int-default-1-pixel-%E7%90%86%E8%A7%A3%E5%8F%8A%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">关于参数scan_height (int, default: 1 pixel)理解及设置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E7%9B%B8%E6%9C%BA-%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE%E5%AE%9E%E7%8E%B0vSLAM%E5%BB%BA%E5%9B%BE%E4%B8%8E%E5%AF%BC%E8%88%AA"><span class="nav-number">2.</span> <span class="nav-text">深度相机+激光雷达实现vSLAM建图与导航</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rtabmap%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">rtabmap使用</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
