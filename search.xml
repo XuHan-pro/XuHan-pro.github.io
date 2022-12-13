@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Blog</title>
+    <url>/2022/12/04/Blog/</url>
+    <content><![CDATA[<p><a href="https://zhuanlan.zhihu.com/p/106060640">搭建参考</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Kinect 使用问题</title>
+    <url>/2022/12/05/Kinect-%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="depthimage-to-laserscan问题"><a href="#depthimage-to-laserscan问题" class="headerlink" title="depthimage_to_laserscan问题"></a><a href="http://wiki.ros.org/depthimage_to_laserscan">depthimage_to_laserscan</a>问题</h1><h2 id="关于参数scan-height-int-default-1-pixel-理解及设置"><a href="#关于参数scan-height-int-default-1-pixel-理解及设置" class="headerlink" title="关于参数scan_height (int, default: 1 pixel)理解及设置"></a>关于参数scan_height (int, default: 1 pixel)理解及设置</h2><p>取高度从offset-scan_hight&#x2F;2到 offset+scan_hight&#x2F;2的点云，对于每一列，扫描将返回在图像中垂直居中的那些像素的最小值。<br><strong>参考：</strong>   </p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/43">https://zhuanlan.zhihu.com/p/43</a></li>
+<li><a href="https://blog.csdn.net/u014587147/article/details/77985508">https://blog.csdn.net/u014587147/article/details/77985508</a></li>
+</ul>
+<p><strong>存在的问题</strong><br>设置固定高度虽然能够扫描到一定高度的障碍物，但是只能在一定距离才能实现，没有达到特定距离障碍物则会消失  </p>
+<h1 id="深度相机-激光雷达实现vSLAM建图与导航"><a href="#深度相机-激光雷达实现vSLAM建图与导航" class="headerlink" title="深度相机+激光雷达实现vSLAM建图与导航"></a><a href="https://blog.yanjingang.com/?p=5756">深度相机+激光雷达实现vSLAM建图与导航</a></h1><h2 id="rtabmap使用"><a href="#rtabmap使用" class="headerlink" title="rtabmap使用"></a><a href="https://github.com/introlab/rtabmap/wiki">rtabmap使用</a></h2><ul>
+<li>问题:<a href="https://answers.ros.org/question/274729/rtab-map-not-using-correct-parameters/">通过launch文件更改参数失效（启动时仍然是默认参数）</a>  </li>
+<li>使用方法：</li>
+</ul>
+<ol>
+<li><p>作为vo：rtab_odometry位置更新频率低、无法通过ekf与odom和imu融合<br>解决方法：<br>优化参数:  </p>
+<p>结果：位置更新频率由6hz提高到16hz和里程计与imu仍然相差太大无法融合</p>
+</li>
+<li><p>作为laser：通过rtab获取障碍物点云，将其向二维地图投影，作为laser数据.<br>通过法线法过滤地面和天花板，留下障碍物点云，通过pointcloud_to_laserscan转换为激光雷达数据进行避障。 </p>
+<p>结果：相比于直接使用depthimage_to_laserscan避障效果更好，对于建图效果，由于深度点云稳定性较差，导致最后激光数据不稳定从而使建图效果变差并且由于下面的问题，也无法将桌面信息更新到地图中。因此只能用于导航。</p>
+</li>
+</ol>
+<ul>
+<li><p>问题：由于相机视野原因，仍然存在一定距离范围内无法检测到桌面的情况。有一定概率从桌子底部穿过。</p>
+</li>
+<li><p>解决方法：适当向上调整相机角度可以改善此问题、由于底盘高度较低，水平放置相机下半部分视野范围存在大量无效信息（主要是地面信息、虽然能够通过法线法过滤但是仍然没有充分利用所有信息）。此方法需要<a href="">联合标定</a>确定相机tf坐标变换，后续可通过三维模型确认。</p>
+</li>
+<li><p>障碍物类型：</p>
+</li>
+</ul>
+<ol>
+<li>实际过不去，但是通过二维激光获得的数据认为过的去：桌子</li>
+<li>实际能过去，但是通过二维激光获得的数据认为过不去：斜坡（无障碍通道）</li>
+</ol>
+]]></content>
+      <categories>
+        <category>ROS1</category>
+      </categories>
+      <tags>
+        <tag>ROS1</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Kinect 配置问题</title>
+    <url>/2022/12/04/Kinect-%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="1、安装驱动问题"><a href="#1、安装驱动问题" class="headerlink" title="1、安装驱动问题"></a>1、安装驱动问题</h1><h2 id="1-1-USB串口问题"><a href="#1-1-USB串口问题" class="headerlink" title="1.1 USB串口问题"></a>1.1 USB串口问题</h2><p>Kinect v1 USB2.0串口 独占，不支持分线器<br>Kinect v2 USB3.0串口</p>
+<h2 id="1-2-驱动安装问题"><a href="#1-2-驱动安装问题" class="headerlink" title="1.2 驱动安装问题"></a>1.2 驱动安装问题</h2><p>Kinect v1存在不同版本驱动注意与系统版本区别<br>主要安装freenect和libfreenect</p>
+<h1 id="2、标定问题"><a href="#2、标定问题" class="headerlink" title="2、标定问题"></a>2、标定问题</h1><p><a href="http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration">v1</a><br>Kinetic v2 标定<br>kinect本身存在范围限制无法通过标定解决，最佳范围为0.5m到4.5m，距离太近深度图和RGB图无法配准（出现残影、重叠）属于正常现象。<br><a href="https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration">github</a><br><a href="https://github.com/code-iai/iai_kinect2/issues/311">注意事项</a></p>
+]]></content>
+      <categories>
+        <category>ROS1</category>
+      </categories>
+      <tags>
+        <tag>ROS1</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ROS2安装问题</title>
+    <url>/2022/12/04/ROS2%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="ROS2安装参考官方文档"><a href="#ROS2安装参考官方文档" class="headerlink" title="ROS2安装参考官方文档"></a>ROS2安装参考<a href="">官方文档</a></h1><p>Ubuntu20.04 支持从源码安装ros2 humble 但是安装功能包时存在依赖问题，只能手动安装挨个解决依赖问题，无法使用apt install自动安装<br>解决方法：<br>1、升级系统至22.04<br>2、采用dock安装  </p>
+<h1 id="ROS2基本教程参考"><a href="#ROS2基本教程参考" class="headerlink" title="ROS2基本教程参考"></a><a href="">ROS2基本教程参考</a></h1><h1 id="cartographer参考文档"><a href="#cartographer参考文档" class="headerlink" title="cartographer参考文档"></a><a href="">cartographer参考文档</a></h1><h1 id="navigation2参考文档"><a href="#navigation2参考文档" class="headerlink" title="navigation2参考文档"></a><a href="">navigation2参考文档</a></h1>]]></content>
+      <categories>
+        <category>ROS2</category>
+      </categories>
+      <tags>
+        <tag>ROS2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>大尺度地图构建</title>
+    <url>/2022/12/12/%E5%A4%A7%E5%B0%BA%E5%BA%A6%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="当前存在的问题"><a href="#当前存在的问题" class="headerlink" title="当前存在的问题"></a>当前存在的问题</h1><ol>
+<li>二维激光数据特征不足、大尺度地图存在相似环境或者退化环境（长走廊），定位会发生漂移，从而影响回环检测效果，进而影响地图构建</li>
+<li>长时期环境更容易发生变化，地图更新维护问题</li>
+<li></li>
+</ol>
+<h1 id="现有解决方案"><a href="#现有解决方案" class="headerlink" title="现有解决方案"></a>现有解决方案</h1><h1 id="思路整理"><a href="#思路整理" class="headerlink" title="思路整理"></a>思路整理</h1>]]></content>
+      <categories>
+        <category>ROS1</category>
+      </categories>
+      <tags>
+        <tag>ROS1</tag>
+      </tags>
+  </entry>
+</search>
