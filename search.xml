@@ -7,20 +7,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Kinect 配置问题</title>
-    <url>/2022/12/04/Kinect-%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="1、安装驱动问题"><a href="#1、安装驱动问题" class="headerlink" title="1、安装驱动问题"></a>1、安装驱动问题</h1><h2 id="1-1-USB串口问题"><a href="#1-1-USB串口问题" class="headerlink" title="1.1 USB串口问题"></a>1.1 USB串口问题</h2><p>Kinect v1 USB2.0串口 独占，不支持分线器<br>Kinect v2 USB3.0串口</p>
-<h2 id="1-2-驱动安装问题"><a href="#1-2-驱动安装问题" class="headerlink" title="1.2 驱动安装问题"></a>1.2 驱动安装问题</h2><p>Kinect v1存在不同版本驱动注意与系统版本区别<br>主要安装freenect和libfreenect</p>
-<h1 id="2、标定问题"><a href="#2、标定问题" class="headerlink" title="2、标定问题"></a>2、标定问题</h1><p><a href="http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration">v1</a><br>Kinetic v2 标定<br>kinect本身存在范围限制无法通过标定解决，最佳范围为0.5m到4.5m，距离太近深度图和RGB图无法配准（出现残影、重叠）属于正常现象。<br><a href="https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration">github</a><br><a href="https://github.com/code-iai/iai_kinect2/issues/311">注意事项</a></p>
-]]></content>
-      <categories>
-        <category>ROS1</category>
-      </categories>
-      <tags>
-        <tag>ROS1</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Kinect 使用问题</title>
     <url>/2022/12/05/Kinect-%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h1 id="depthimage-to-laserscan问题"><a href="#depthimage-to-laserscan问题" class="headerlink" title="depthimage_to_laserscan问题"></a><a href="http://wiki.ros.org/depthimage_to_laserscan">depthimage_to_laserscan</a>问题</h1><h2 id="关于参数scan-height-int-default-1-pixel-理解及设置"><a href="#关于参数scan-height-int-default-1-pixel-理解及设置" class="headerlink" title="关于参数scan_height (int, default: 1 pixel)理解及设置"></a>关于参数scan_height (int, default: 1 pixel)理解及设置</h2><p>取高度从offset-scan_hight&#x2F;2到 offset+scan_hight&#x2F;2的点云，对于每一列，扫描将返回在图像中垂直居中的那些像素的最小值。<br><strong>参考：</strong>   </p>
@@ -62,14 +48,12 @@
       </tags>
   </entry>
   <entry>
-    <title>大尺度地图构建</title>
-    <url>/2022/12/12/%E5%A4%A7%E5%B0%BA%E5%BA%A6%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/</url>
-    <content><![CDATA[<h1 id="当前存在的问题"><a href="#当前存在的问题" class="headerlink" title="当前存在的问题"></a>当前存在的问题</h1><ol>
-<li>二维激光数据特征不足、大尺度地图存在相似环境或者退化环境（长走廊），定位会发生漂移，从而影响回环检测效果，进而影响地图构建</li>
-<li>长时期环境更容易发生变化，地图更新维护问题</li>
-<li></li>
-</ol>
-<h1 id="现有解决方案"><a href="#现有解决方案" class="headerlink" title="现有解决方案"></a>现有解决方案</h1><h1 id="思路整理"><a href="#思路整理" class="headerlink" title="思路整理"></a>思路整理</h1>]]></content>
+    <title>Kinect 配置问题</title>
+    <url>/2022/12/04/Kinect-%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="1、安装驱动问题"><a href="#1、安装驱动问题" class="headerlink" title="1、安装驱动问题"></a>1、安装驱动问题</h1><h2 id="1-1-USB串口问题"><a href="#1-1-USB串口问题" class="headerlink" title="1.1 USB串口问题"></a>1.1 USB串口问题</h2><p>Kinect v1 USB2.0串口 独占，不支持分线器<br>Kinect v2 USB3.0串口</p>
+<h2 id="1-2-驱动安装问题"><a href="#1-2-驱动安装问题" class="headerlink" title="1.2 驱动安装问题"></a>1.2 驱动安装问题</h2><p>Kinect v1存在不同版本驱动注意与系统版本区别<br>主要安装freenect和libfreenect</p>
+<h1 id="2、标定问题"><a href="#2、标定问题" class="headerlink" title="2、标定问题"></a>2、标定问题</h1><p><a href="http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration">v1</a><br>Kinetic v2 标定<br>kinect本身存在范围限制无法通过标定解决，最佳范围为0.5m到4.5m，距离太近深度图和RGB图无法配准（出现残影、重叠）属于正常现象。<br><a href="https://github.com/code-iai/iai_kinect2/tree/master/kinect2_calibration">github</a><br><a href="https://github.com/code-iai/iai_kinect2/issues/311">注意事项</a></p>
+]]></content>
       <categories>
         <category>ROS1</category>
       </categories>
@@ -87,6 +71,22 @@
       </categories>
       <tags>
         <tag>ROS2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>大尺度地图构建</title>
+    <url>/2022/12/12/%E5%A4%A7%E5%B0%BA%E5%BA%A6%E5%9C%B0%E5%9B%BE%E6%9E%84%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="当前存在的问题"><a href="#当前存在的问题" class="headerlink" title="当前存在的问题"></a>当前存在的问题</h1><ol>
+<li>二维激光数据特征不足、大尺度地图存在相似环境或者退化环境（长走廊），定位会发生漂移，从而影响回环检测效果，进而影响地图构建</li>
+<li>长时期环境更容易发生变化，地图更新维护问题</li>
+<li></li>
+</ol>
+<h1 id="现有解决方案"><a href="#现有解决方案" class="headerlink" title="现有解决方案"></a>现有解决方案</h1><h1 id="思路整理"><a href="#思路整理" class="headerlink" title="思路整理"></a>思路整理</h1>]]></content>
+      <categories>
+        <category>ROS1</category>
+      </categories>
+      <tags>
+        <tag>ROS1</tag>
       </tags>
   </entry>
 </search>
