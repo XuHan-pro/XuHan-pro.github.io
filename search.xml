@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Blog</title>
-    <url>/2022/12/04/Blog/</url>
-    <content><![CDATA[<p><a href="https://zhuanlan.zhihu.com/p/106060640">搭建参考</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Kinect 使用问题</title>
     <url>/2022/12/05/Kinect-%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h1 id="depthimage-to-laserscan问题"><a href="#depthimage-to-laserscan问题" class="headerlink" title="depthimage_to_laserscan问题"></a><a href="http://wiki.ros.org/depthimage_to_laserscan">depthimage_to_laserscan</a>问题</h1><h2 id="关于参数scan-height-int-default-1-pixel-理解及设置"><a href="#关于参数scan-height-int-default-1-pixel-理解及设置" class="headerlink" title="关于参数scan_height (int, default: 1 pixel)理解及设置"></a>关于参数scan_height (int, default: 1 pixel)理解及设置</h2><p>取高度从offset-scan_hight&#x2F;2到 offset+scan_hight&#x2F;2的点云，对于每一列，扫描将返回在图像中垂直居中的那些像素的最小值。<br><strong>参考：</strong>   </p>
@@ -46,6 +40,12 @@
       <tags>
         <tag>ROS1</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Blog</title>
+    <url>/2022/12/04/Blog/</url>
+    <content><![CDATA[<p><a href="https://zhuanlan.zhihu.com/p/106060640">搭建参考</a></p>
+]]></content>
   </entry>
   <entry>
     <title>Kinect 配置问题</title>
