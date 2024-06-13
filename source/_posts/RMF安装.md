@@ -7,14 +7,24 @@ tags:
 categories:
   - RMF
 ---
-# open_RMF 配置，操作
+- [1. open\_RMF 配置，操作](#1-open_rmf-配置操作)
+  - [1.1. RMF安装](#11-rmf安装)
+    - [1.1.1. 准备工作](#111-准备工作)
+    - [1.1.2. 非ROS依赖安装](#112-非ros依赖安装)
+    - [1.1.3. ROS依赖安装](#113-ros依赖安装)
+  - [1.2. RMF WEB 安装](#12-rmf-web-安装)
+    - [1.2.1. 准备工作](#121-准备工作)
+    - [1.2.2. 安装依赖](#122-安装依赖)
+  - [1.3. 操作流程：](#13-操作流程)
 
-## RMF安装
+# 1. open_RMF 配置，操作
+
+## 1.1. RMF安装
  
 系统要求：ubuntu22.04
-### 0、准备工作
+### 1.1.1. 准备工作
  
-### 0.1、非ROS依赖安装
+### 1.1.2. 非ROS依赖安装
 ```bash  
 sudo apt update && sudo apt install \
   python3-pip \
@@ -32,7 +42,7 @@ wget https://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 python3 -m pip install flask-socketio fastapi uvicorn
  ```
 
-### 0.2、ROS依赖安装
+### 1.1.3. ROS依赖安装
 ```bash
 sudo rosdep init # run if first time using rosdep.
 rosdep update
@@ -91,9 +101,9 @@ colcon build --mixin release lld
 ```
  
  
-## RMF WEB 安装
+## 1.2. RMF WEB 安装
  
-### 准备工作
+### 1.2.1. 准备工作
 安装nodejs
 ```bash
 sudo apt update && sudo apt install curl
@@ -116,7 +126,7 @@ pip3 install pipenv
 问题：pipenv not found: https://blog.csdn.net/FloraCHY/article/details/119790395
  
  
-### 安装依赖
+### 1.2.2. 安装依赖
 ```bash
 git clone https://github.com/open-rmf/rmf-web.git
 cd  ~/rmf-web
@@ -130,7 +140,7 @@ pnpm install
 `pnpm config set registry https://registry.npmjs.org`
  
  
-## 操作流程：
+## 1.3. 操作流程：
 demo试运行：
  
 ```bash
