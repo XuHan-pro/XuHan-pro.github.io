@@ -147,9 +147,6 @@ demo试运行：
 cd ~/rmf-web/packages/dashboard
 pnpm start
 ```
-AttributeError: module 'lib' has no attribute 'OpenSSL_add_all_algorithms'
-  
- 
 仿真  
 ```bash
 source ~/rmf_ws/install/setup.bash  

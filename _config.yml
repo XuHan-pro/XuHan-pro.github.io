@@ -141,3 +141,10 @@ live2d: ##自定义看板娘动画
 # 自动生成sitemap
 sitemap:
   path: sitemap.xml
+pandoc:
+  args:
+    - "-f"
+    - "markdown"
+    - "-t"
+    - "html"
+    - "--mathjax"

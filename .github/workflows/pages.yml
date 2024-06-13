@@ -14,6 +14,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # If your repository depends on submodule, please see: https://github.com/actions/checkout
           submodules: recursive
+      - name: Use pandoc
+        uses: nikeee/setup-pandoc@v1
       - name: Use Node.js 20.x
         uses: actions/setup-node@v3
         with:
